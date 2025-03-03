@@ -1,8 +1,7 @@
 package az.edu.turing.arvilo.jbecourse.lab2;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Scanner;
 
 public class Demo {
@@ -10,14 +9,13 @@ public class Demo {
     private final static String FILEPATH = "src/main/resources/az/edu/turing/arvilo/jbecourse/lab2/file.txt";
 
     public String inputString() {
-        try (InputStream inputStream = new FileInputStream(FILEPATH)) {
-            int data;
-            StringBuilder fileContent = new StringBuilder();
-            while ((data = inputStream.read()) != -1) {
-                fileContent.append((char) data);
+        try (Scanner scanner = new Scanner(new File(FILEPATH))) {
+            StringBuilder content = new StringBuilder();
+            while (scanner.hasNext()) {
+                content.append(scanner.next());
             }
 
-            return fileContent.toString();
+            return content.toString();
         } catch (IOException e) {
             System.out.println("FAIL!");
             try (Scanner scanner = new Scanner(System.in)) {
@@ -31,19 +29,25 @@ public class Demo {
     public int computeSequence(String text) {
         try {
             if (text == null || text.length() < 2) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("text can't be null or have a length less than 2.");
             }
             int num1 = text
                     .chars()
                     .limit(text.length() - 1)
                     .peek(ch -> {
                         if (!Character.isDigit(ch)) {
-                            throw new NumberFormatException();
+                            throw new IllegalArgumentException("Content is not number");
                         }
                     })
                     .map(Character::getNumericValue)
                     .sum();
+            if (!Character.isDigit(text.charAt(text.length() - 1))) {
+                throw new IllegalArgumentException("Content is not number");
+            }
             int num2 = Integer.parseInt(text.substring(text.length() - 1));
+            if (num2 == 0) {
+                throw new ArithmeticException("Last char can't be '0'.");
+            }
 
             return num1 / num2;
         } catch (ArithmeticException | IllegalArgumentException e) {
