@@ -5,8 +5,6 @@ import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateR
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 
-import java.util.Optional;
-
 public class StudentMapper {
 
     public StudentEntity mapRequestToEntity(StudentCreateRequest request) {

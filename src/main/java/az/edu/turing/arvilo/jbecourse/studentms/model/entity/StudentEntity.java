@@ -1,7 +1,5 @@
 package az.edu.turing.arvilo.jbecourse.studentms.model.entity;
 
-import java.util.Objects;
-
 public class StudentEntity {
 
     private Long id;

@@ -1,5 +1,6 @@
 package az.edu.turing.arvilo.jbecourse.studentms.repository;
 
+import az.edu.turing.arvilo.jbecourse.studentms.exception.DbException;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 
 import java.util.List;

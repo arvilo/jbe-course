@@ -6,7 +6,7 @@ import az.edu.turing.arvilo.jbecourse.studentms.mapper.StudentMapper;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
-import az.edu.turing.arvilo.jbecourse.studentms.repository.impl.StudentRepositoryMemory;
+import az.edu.turing.arvilo.jbecourse.studentms.repository.impl.StudentRepositoryFile;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
 import az.edu.turing.arvilo.jbecourse.studentms.service.impl.StudentServiceImpl;
 
@@ -126,7 +126,7 @@ public class ConsoleApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         StudentMapper mapper = new StudentMapper();
-        StudentRepository repository = new StudentRepositoryMemory();
+        StudentRepository repository = new StudentRepositoryFile();
         StudentService service = new StudentServiceImpl(repository, mapper);
         StudentController controller = new StudentControllerCli(service);
         ConsoleApp app = new ConsoleApp(controller, scanner);
