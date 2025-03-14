@@ -91,6 +91,7 @@ public class StudentRepositoryFile
 
     private synchronized void createDbFile() {
         File file = new File(FILEPATH);
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -227,8 +228,15 @@ public class StudentRepositoryFile
                         "jbecourse", "studentms", "nextID.bin")
         );
         File file = new File(path);
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        if (!fileExist()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
-            if (!fileExist()) file.createNewFile();
             dos.writeLong(1L);
         } catch (IOException e) {
             throw new RuntimeException(e);
