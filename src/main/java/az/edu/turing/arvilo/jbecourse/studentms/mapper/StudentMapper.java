@@ -4,7 +4,9 @@ import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateR
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StudentMapper {
 
     public StudentEntity mapRequestToEntity(StudentCreateRequest request) {

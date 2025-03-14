@@ -6,6 +6,7 @@ import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class StudentRepositoryFile
         implements StudentRepository {
 

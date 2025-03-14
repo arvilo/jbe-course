@@ -7,11 +7,13 @@ import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentRespon
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Service
 public class StudentServiceImpl
         implements StudentService {
 
@@ -70,6 +72,9 @@ public class StudentServiceImpl
         return repository
                 .getById(id)
                 .map(entity -> {
+                    if (entity.isDeleted()) {
+                        return null;
+                    }
                     entity.setDeleted(true);
                     repository.update(entity);
 
