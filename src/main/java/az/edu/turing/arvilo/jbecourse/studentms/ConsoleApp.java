@@ -1,10 +1,8 @@
 package az.edu.turing.arvilo.jbecourse.studentms;
 
-import az.edu.turing.arvilo.jbecourse.studentms.controller.StudentController;
-import az.edu.turing.arvilo.jbecourse.studentms.controller.impl.StudentControllerCli;
+import az.edu.turing.arvilo.jbecourse.studentms.controller.StudentControllerCli;
 import az.edu.turing.arvilo.jbecourse.studentms.mapper.StudentMapper;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.impl.StudentRepositoryFile;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
@@ -14,10 +12,10 @@ import java.util.Scanner;
 
 public class ConsoleApp {
 
-    private final StudentController controller;
+    private final StudentControllerCli controller;
     private final Scanner scanner;
 
-    public ConsoleApp(StudentController controller, Scanner scanner) {
+    public ConsoleApp(StudentControllerCli controller, Scanner scanner) {
         this.controller = controller;
         this.scanner = scanner;
     }
@@ -80,9 +78,9 @@ public class ConsoleApp {
         System.out.print("\n");
         controller
                 .getAll()
-                .forEach(student -> {
-                    System.out.println("*".repeat(20) + "\n" + student);
-                });
+                .forEach(student ->
+                        System.out.println("*".repeat(20) + "\n" + student)
+                );
         homePage();
     }
 
@@ -100,7 +98,7 @@ public class ConsoleApp {
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
         System.out.println(
-                controller.update(new StudentUpdateRequest(id, name, surname))
+                controller.update(id, new StudentCreateRequest(name, surname))
         );
         homePage();
     }
@@ -128,7 +126,7 @@ public class ConsoleApp {
         StudentMapper mapper = new StudentMapper();
         StudentRepository repository = new StudentRepositoryFile();
         StudentService service = new StudentServiceImpl(repository, mapper);
-        StudentController controller = new StudentControllerCli(service);
+        StudentControllerCli controller = new StudentControllerCli(service);
         ConsoleApp app = new ConsoleApp(controller, scanner);
         app.run();
     }

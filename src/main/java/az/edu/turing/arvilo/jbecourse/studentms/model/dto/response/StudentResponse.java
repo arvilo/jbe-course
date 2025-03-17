@@ -43,8 +43,8 @@ public class StudentResponse {
     public String toString() {
         String format = """
                 id = %d
-                name = \"%s\"
-                surname = \"%s\"""";
+                name = "%s"
+                surname = "%s\"""";
 
         return String.format(format, id, name, surname);
     }

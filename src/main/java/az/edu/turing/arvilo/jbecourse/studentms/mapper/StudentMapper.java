@@ -1,7 +1,6 @@
 package az.edu.turing.arvilo.jbecourse.studentms.mapper;
 
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ public class StudentMapper {
         return request == null ?
                 null :
                 new StudentEntity(
-                        0,
+                        0L,
                         request.getName(),
                         request.getSurname(),
                         false
@@ -29,18 +28,6 @@ public class StudentMapper {
                         entity.getId(),
                         entity.getName(),
                         entity.getSurname()
-                );
-    }
-
-    public StudentEntity mapRequestToEntity(StudentUpdateRequest request) {
-
-        return request == null ?
-                null :
-                new StudentEntity(
-                        request.getId(),
-                        request.getName(),
-                        request.getSurname(),
-                        false
                 );
     }
 }

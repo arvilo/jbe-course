@@ -17,6 +17,8 @@ import java.io.DataOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 @Repository
 public class StudentRepositoryFile
@@ -114,9 +116,8 @@ public class StudentRepositoryFile
 
             return create(student);
         }
-        update(student);
 
-        return Optional.of(student);
+        return Optional.of(update(student));
     }
 
     @Override
@@ -130,17 +131,20 @@ public class StudentRepositoryFile
     }
 
     @Override
-    public synchronized void update(StudentEntity student) {
-        writeList(
-                list()
-                        .stream()
-                        .map(entity ->
-                                entity.getId().equals(student.getId()) ?
-                                        student :
-                                        entity
-                        )
-                        .toList()
-        );
+    public synchronized StudentEntity update(StudentEntity student) {
+        List<StudentEntity> list = list();
+        int index = IntStream.range(0, list.size())
+                .filter(i -> list.get(i).getId().equals(student.getId()))
+                .findAny()
+                .orElse(-1);
+        if (index == -1) {
+
+            return null;
+        }
+        list.set(index, student);
+        writeList(list);
+
+        return student;
 
     }
 

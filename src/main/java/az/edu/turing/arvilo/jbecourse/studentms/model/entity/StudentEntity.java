@@ -10,7 +10,7 @@ public class StudentEntity {
     public StudentEntity() {
     }
 
-    public StudentEntity(long id, String name, String surname, boolean deleted) {
+    public StudentEntity(Long id, String name, String surname, boolean deleted) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -21,7 +21,7 @@ public class StudentEntity {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

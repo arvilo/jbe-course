@@ -2,7 +2,6 @@ package az.edu.turing.arvilo.jbecourse.studentms.service.impl;
 
 import az.edu.turing.arvilo.jbecourse.studentms.mapper.StudentMapper;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentUpdateRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class StudentServiceImpl
@@ -26,11 +24,12 @@ public class StudentServiceImpl
     }
 
     @Override
-    public Optional<StudentResponse> create(StudentCreateRequest request) {
+    public StudentResponse create(StudentCreateRequest request) {
 
         return repository
                 .create(mapper.mapRequestToEntity(request))
-                .map(mapper::mapEntityToResponse);
+                .map(mapper::mapEntityToResponse)
+                .orElseThrow();
     }
 
     @Override
@@ -45,41 +44,39 @@ public class StudentServiceImpl
     }
 
     @Override
-    public Optional<StudentResponse> getById(Long id) {
+    public StudentResponse getById(Long id) {
 
         return repository
                 .getById(id)
                 .filter(entity -> !entity.isDeleted())
-                .map(mapper::mapEntityToResponse);
+                .map(mapper::mapEntityToResponse)
+                .orElse(null);
     }
 
     @Override
-    public Optional<StudentResponse> update(StudentUpdateRequest request) {
+    public StudentResponse update(Long id, StudentCreateRequest request) {
         StudentEntity entity = mapper.mapRequestToEntity(request);
+        entity.setId(id);
         try {
-            repository.update(entity);
 
-            return getById(entity.getId());
+            return mapper.mapEntityToResponse(repository.update(entity));
         } catch (NoSuchElementException e) {
 
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
-    public Optional<StudentResponse> delete(Long id) {
+    public StudentResponse delete(Long id) {
 
         return repository
                 .getById(id)
                 .map(entity -> {
-                    if (entity.isDeleted()) {
-                        return null;
-                    }
                     entity.setDeleted(true);
-                    repository.update(entity);
 
-                    return entity;
+                    return repository.update(entity);
                 })
-                .map(mapper::mapEntityToResponse);
+                .map(mapper::mapEntityToResponse)
+                .orElse(null);
     }
 }

@@ -4,7 +4,6 @@ import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +19,8 @@ public class StudentRepositoryMemory
 
             return create(student);
         }
-        update(student);
 
-        return Optional.of(student);
+        return Optional.of(update(student));
     }
 
     @Override
@@ -34,18 +32,13 @@ public class StudentRepositoryMemory
     }
 
     @Override
-    public void update(StudentEntity student) {
-        map(
-                student,
-                students
-                        .stream()
-                        .filter(
-                                student1 ->
-                                        student1.getId().equals(student.getId())
-                        )
-                        .findAny()
-                        .orElseThrow()
-        );
+    public StudentEntity update(StudentEntity student) {
+        StudentEntity target = getById(student.getId()).orElse(null);
+        if (target != null) {
+            map(student, target);
+        }
+
+        return target;
     }
 
     @Override
@@ -80,14 +73,9 @@ public class StudentRepositoryMemory
     }
 
     private void map(StudentEntity source, StudentEntity target) {
-        Arrays.stream(StudentEntity.class.getDeclaredFields())
-                .forEach(field -> {
-                    field.setAccessible(true);
-                    try {
-                        field.set(target, field.get(source));
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        target.setId(source.getId());
+        target.setName(source.getName());
+        target.setSurname(source.getSurname());
+        target.setDeleted(source.isDeleted());
     }
 }
