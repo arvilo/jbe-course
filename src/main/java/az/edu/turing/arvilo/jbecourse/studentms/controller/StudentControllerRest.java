@@ -1,6 +1,6 @@
 package az.edu.turing.arvilo.jbecourse.studentms.controller;
 
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
+import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class StudentControllerRest {
     }
 
     @PostMapping("/students/create")
-    public StudentResponse create(@RequestBody StudentCreateRequest request) {
+    public StudentResponse create(@RequestBody StudentRequest request) {
         if (request == null) {
             throw new IllegalArgumentException();
         }
@@ -42,7 +42,7 @@ public class StudentControllerRest {
 
     @PutMapping("/students/update/{id}")
     public StudentResponse update(@PathVariable Long id,
-                                  @RequestBody StudentCreateRequest request) {
+                                  @RequestBody StudentRequest request) {
 
         return service
                 .update(id, request);

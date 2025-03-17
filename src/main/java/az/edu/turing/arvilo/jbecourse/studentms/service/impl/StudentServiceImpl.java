@@ -1,7 +1,7 @@
 package az.edu.turing.arvilo.jbecourse.studentms.service.impl;
 
 import az.edu.turing.arvilo.jbecourse.studentms.mapper.StudentMapper;
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
+import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.model.entity.StudentEntity;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
@@ -24,7 +24,7 @@ public class StudentServiceImpl
     }
 
     @Override
-    public StudentResponse create(StudentCreateRequest request) {
+    public StudentResponse create(StudentRequest request) {
 
         return repository
                 .create(mapper.mapRequestToEntity(request))
@@ -54,7 +54,7 @@ public class StudentServiceImpl
     }
 
     @Override
-    public StudentResponse update(Long id, StudentCreateRequest request) {
+    public StudentResponse update(Long id, StudentRequest request) {
         StudentEntity entity = mapper.mapRequestToEntity(request);
         entity.setId(id);
         try {

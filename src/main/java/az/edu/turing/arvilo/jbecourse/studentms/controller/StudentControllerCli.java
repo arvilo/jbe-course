@@ -1,6 +1,6 @@
 package az.edu.turing.arvilo.jbecourse.studentms.controller;
 
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
+import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.model.dto.response.StudentResponse;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
 
@@ -14,7 +14,7 @@ public class StudentControllerCli {
         this.service = service;
     }
 
-    public StudentResponse create(StudentCreateRequest request) {
+    public StudentResponse create(StudentRequest request) {
         if (request == null) {
             throw new IllegalArgumentException();
         }
@@ -34,7 +34,7 @@ public class StudentControllerCli {
         return service.getAll();
     }
 
-    public StudentResponse update(Long id, StudentCreateRequest request) {
+    public StudentResponse update(Long id, StudentRequest request) {
 
         return service
                 .update(id, request);

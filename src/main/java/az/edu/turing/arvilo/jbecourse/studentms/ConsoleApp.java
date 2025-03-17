@@ -2,7 +2,7 @@ package az.edu.turing.arvilo.jbecourse.studentms;
 
 import az.edu.turing.arvilo.jbecourse.studentms.controller.StudentControllerCli;
 import az.edu.turing.arvilo.jbecourse.studentms.mapper.StudentMapper;
-import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentCreateRequest;
+import az.edu.turing.arvilo.jbecourse.studentms.model.dto.request.StudentRequest;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.StudentRepository;
 import az.edu.turing.arvilo.jbecourse.studentms.repository.impl.StudentRepositoryFile;
 import az.edu.turing.arvilo.jbecourse.studentms.service.StudentService;
@@ -50,7 +50,7 @@ public class ConsoleApp {
 
     public void create() {
         System.out.print("\n");
-        StudentCreateRequest request = new StudentCreateRequest();
+        StudentRequest request = new StudentRequest();
         System.out.print("Name: ");
         request.setName(scanner.nextLine());
         System.out.print("Surname: ");
@@ -98,7 +98,7 @@ public class ConsoleApp {
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
         System.out.println(
-                controller.update(id, new StudentCreateRequest(name, surname))
+                controller.update(id, new StudentRequest(name, surname))
         );
         homePage();
     }

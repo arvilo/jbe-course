@@ -1,14 +1,14 @@
 package az.edu.turing.arvilo.jbecourse.studentms.model.dto.request;
 
-public class StudentCreateRequest {
+public class StudentRequest {
 
     private String name;
     private String surname;
 
-    public StudentCreateRequest() {
+    public StudentRequest() {
     }
 
-    public StudentCreateRequest(String name, String surname) {
+    public StudentRequest(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
@@ -31,7 +31,7 @@ public class StudentCreateRequest {
 
     @Override
     public String toString() {
-        return "StudentCreateRequest{" +
+        return "StudentRequest{" +
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 '}';
