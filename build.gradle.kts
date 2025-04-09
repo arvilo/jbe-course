@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.postgresql:postgresql:42.7.2")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.3")
