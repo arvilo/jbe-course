@@ -18,10 +18,7 @@ import java.util.Optional;
 public class StudentRepositoryPostgres
         implements StudentRepository {
 
-    private Connection connection;
-
     public StudentRepositoryPostgres() {
-        getConnection();
         String createTableSql = """
                 create table if not exists students (
                 id SERIAL PRIMARY KEY,
@@ -29,27 +26,25 @@ public class StudentRepositoryPostgres
                 surname varchar(30),
                 deleted bool
                 )""";
-        try (Statement statement = connection.createStatement()) {
+        try (
+                Connection connection = getConnection();
+                Statement statement = connection.createStatement()
+        ) {
             statement.execute(createTableSql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
-    private void getConnection() {
+    private Connection getConnection() {
         String port = "54320";
         String dbName = "studentms";
         String user = "postgres";
         String password = "123456";
         String url = String.format("jdbc:postgresql://localhost:%s/%s", port, dbName);
         try {
-            connection = DriverManager.getConnection(url, user, password);
+
+            return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -67,14 +62,16 @@ public class StudentRepositoryPostgres
 
     @Override
     public Optional<StudentEntity> create(StudentEntity student) {
-        getConnection();
         String sql = """
                 insert into 
                 students (name, surname, deleted)
                 values (?, ?, ?)
                 returning id""";
         Optional<StudentEntity> studentEntity;
-        try (PreparedStatement pStmt = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = getConnection();
+                PreparedStatement pStmt = connection.prepareStatement(sql)
+        ) {
             pStmt.setString(1, student.getName());
             pStmt.setString(2, student.getSurname());
             pStmt.setBoolean(3, student.isDeleted());
@@ -85,17 +82,8 @@ public class StudentRepositoryPostgres
             } else {
                 throw new SQLException();
             }
-            if (resultSet.next()) {
-                throw new SQLException();
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         return studentEntity;
@@ -103,14 +91,16 @@ public class StudentRepositoryPostgres
 
     @Override
     public StudentEntity update(StudentEntity student) {
-        getConnection();
         String sql = """
                 update students 
                 set name = ?,
                 surname = ?,
                 deleted = ?
                 where id = ?""";
-        try (PreparedStatement pStmt = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = getConnection();
+                PreparedStatement pStmt = connection.prepareStatement(sql)
+        ) {
             pStmt.setString(1, student.getName());
             pStmt.setString(2, student.getSurname());
             pStmt.setBoolean(3, student.isDeleted());
@@ -120,12 +110,6 @@ public class StudentRepositoryPostgres
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         return student;
@@ -133,11 +117,13 @@ public class StudentRepositoryPostgres
 
     @Override
     public List<StudentEntity> list() {
-        getConnection();
         List<StudentEntity> list;
         String sql = "select * from students";
-        try (PreparedStatement pStmt = connection.prepareStatement(sql)) {
-            ResultSet resultSet = pStmt.executeQuery();
+        try (
+                Connection connection = getConnection();
+                Statement stmt = connection.createStatement()
+        ) {
+            ResultSet resultSet = stmt.executeQuery(sql);
             list = new ArrayList<>();
             while (resultSet.next()) {
                 list.add(
@@ -151,12 +137,6 @@ public class StudentRepositoryPostgres
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         return list;
@@ -164,10 +144,12 @@ public class StudentRepositoryPostgres
 
     @Override
     public Optional<StudentEntity> getById(Long id) {
-        getConnection();
         Optional<StudentEntity> studentEntity;
         String sql = "select * from students where id = ?";
-        try (PreparedStatement pStmt = connection.prepareStatement(sql)) {
+        try (
+                Connection connection = getConnection();
+                PreparedStatement pStmt = connection.prepareStatement(sql)
+        ) {
             pStmt.setLong(1, id);
             ResultSet resultSet = pStmt.executeQuery();
             if (resultSet.next()) {
@@ -184,12 +166,6 @@ public class StudentRepositoryPostgres
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         return studentEntity;
@@ -197,23 +173,19 @@ public class StudentRepositoryPostgres
 
     @Override
     public synchronized void deleteById(Long id) {
-        getConnection();
         String sql = """
                 delete from students 
                 where id = ?""";
-        try (PreparedStatement pStmt = connection.prepareStatement(sql)) {
-            pStmt.setLong(4, id);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement pStmt = connection.prepareStatement(sql)
+        ) {
+            pStmt.setLong(1, id);
             if (pStmt.executeUpdate() != 1) {
                 throw new SQLException();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 }
