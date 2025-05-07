@@ -77,8 +77,13 @@ public class StudentRepositoryPostgres
             pStmt.setBoolean(3, student.isDeleted());
             ResultSet resultSet = pStmt.executeQuery();
             if (resultSet.next()) {
-                student.setId(resultSet.getLong("id"));
-                studentEntity = Optional.of(student);
+                StudentEntity generatedStudent = new StudentEntity(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("surname"),
+                        resultSet.getBoolean("deleted")
+                );
+                studentEntity = Optional.of(generatedStudent);
             } else {
                 throw new SQLException();
             }
